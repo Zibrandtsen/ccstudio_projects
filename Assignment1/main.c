@@ -7,6 +7,8 @@
 int main(void) {
 	int dummy;
 	
+	int counter;
+
 	// Enable the GPIO port that is used for the on-board LED and switches.
     SYSCTL_RCGC2_R = SYSCTL_RCGC2_GPIOF; //TODO - what is dis???
 
@@ -21,14 +23,40 @@ int main(void) {
 	// Enable internal pull-up (PF0 and PF4)
     GPIO_PORTF_PUR_R = 0x11;
 
+
+	counter = 0;
 	while(1){
-		if(GPIO_PORTF_DATA_R & (1<<4)){
+		if(GPIO_PORTF_DATA_R & (1<<4)){	// If SW1 is pressed
+			counter += 1;
+			GPIO_PORTF_DATA_R = (1<<3);
+
+			
 			// Turn on the LED.
-			GPIO_PORTF_DATA_R &= ~(1<<3);
-		} else {
-			// Turn off the LED.
-			GPIO_PORTF_DATA_R |= (1<<3);
+			// GPIO_PORTF_DATA_R &= ~(1<<3);
+			// if(counter == 8){
+			// 	counter = 0;
+			// } else if (counter == 1) {
+			// 	GPIO_PORTF_DATA_R = (1<<3);
+			// } else if (counter == 2) {
+			// 	GPIO_PORTF_DATA_R = (1<<2);
+			// } else if (counter == 3) {
+			// 	GPIO_PORTF_DATA_R = (1<<2)|(1<<3);
+			// } else if (counter == 4) {
+			// 	GPIO_PORTF_DATA_R = (1<<1);
+			// } else if (counter == 5) {
+			// 	GPIO_PORTF_DATA_R = (1<<1)|(1<<3);
+			// } else if (counter == 6) {
+			// 	GPIO_PORTF_DATA_R = (1<<1)|(1<<2);
+			// } else if (counter == 7) {
+			// 	GPIO_PORTF_DATA_R = (1<<1)|(1<<2)|(1<<3);
+			// }
 		}
+		
+		else {
+			GPIO_PORTF_DATA_R = 0x00;
+			// Turn off the LED.
+			// GPIO_PORTF_DATA_R |= (1<<3);
+			}
 	}
 
 	return 0;
