@@ -6,7 +6,7 @@ int main(void){
 
     // Enable the GPIO port that is used for the on-board LED and switches.
     SYSCTL_RCGC2_R = SYSCTL_RCGC2_GPIOF;
-
+//
     // Do a dummy read to insert a few cycles after enabling the peripheral.
     dummy = SYSCTL_RCGC2_R;
 
