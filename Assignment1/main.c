@@ -27,11 +27,22 @@ int main(void) {
 	counter = 0;
 	while(1){
 		if(GPIO_PORTF_DATA_R & (1<<4)){	// If SW1 is pressed
-			counter += 1;
-			GPIO_PORTF_DATA_R = (1<<3);
+			GPIO_PORTF_DATA_R &= (0<<1); // Turn off LED at place 1
 
-			
-			// Turn on the LED.
+		} else {
+			// Turn off the LED at places 1, 2 and 3
+			GPIO_PORTF_DATA_R |= (1<<1);
+			GPIO_PORTF_DATA_R &= ~(1<<2);
+			GPIO_PORTF_DATA_R &= ~(1<<3);
+		}
+	}
+
+	return 0;
+}
+
+
+
+		// Turn on the LED.
 			// GPIO_PORTF_DATA_R &= ~(1<<3);
 			// if(counter == 8){
 			// 	counter = 0;
@@ -50,14 +61,4 @@ int main(void) {
 			// } else if (counter == 7) {
 			// 	GPIO_PORTF_DATA_R = (1<<1)|(1<<2)|(1<<3);
 			// }
-		}
-		
-		else {
-			GPIO_PORTF_DATA_R = 0x00;
-			// Turn off the LED.
-			// GPIO_PORTF_DATA_R |= (1<<3);
-			}
-	}
-
-	return 0;
-}
+			

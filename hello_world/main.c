@@ -23,10 +23,10 @@ int main(void){
     while(1){
         if( GPIO_PORTF_DATA_R & 0x10 ){
             // Turn on the LED.
-            GPIO_PORTF_DATA_R &= ~(0x02);
+            GPIO_PORTF_DATA_R &= (0<<1);
         } else {
             // Turn off the LED.
-            GPIO_PORTF_DATA_R |= 0x02;
+            GPIO_PORTF_DATA_R |= (1<<1);
         }
     }
     return 0;
