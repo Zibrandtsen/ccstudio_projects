@@ -10,13 +10,17 @@
 
 /********** Functions ************/
 
-int main(void) {
-	/********** 
-	 * Input: 
-	 * Output:
-	 * Function:  
-	 *************/
+/**
+ * @brief The main function of the program.
+ *
+ * This function is the entry point of the program and is called when the program starts.
+ * It initializes the program and executes the main logic.
+ *
+ * @args:
+ * @return: The exit status of the program.
+ */
 
+int main(void) {
 	int dummy;
 	
 	int counter;
@@ -35,17 +39,16 @@ int main(void) {
 	// Enable internal pull-up (PF0 and PF4)
     GPIO_PORTF_PUR_R = 0x11;
 
-
 	counter = 0;
 	while(1){
-		if(GPIO_PORTF_DATA_R & (1<<4)){	// If SW1 is pressed ??
-			GPIO_PORTF_DATA_R &= (0<<1); // Turn off LED at place 1
+		if(GPIO_PORTF_DATA_R & 0x10){	// If SW1 is pressed ??
+			GPIO_PORTF_DATA_R ^= 0x02; // Turn off LED at place 1
 
 		} else {
 			// Turn off the LED at places 1, 2 and 3
-			GPIO_PORTF_DATA_R |= (1<<1);
-			GPIO_PORTF_DATA_R &= ~(1<<2);
-			GPIO_PORTF_DATA_R &= ~(1<<3);
+			// GPIO_PORTF_DATA_R |= (1<<1);
+			// GPIO_PORTF_DATA_R &= ~(1<<2);
+			// GPIO_PORTF_DATA_R &= ~(1<<3);
 		}
 	}
 
