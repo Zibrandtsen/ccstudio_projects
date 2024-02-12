@@ -26,7 +26,7 @@ int main(void) {
 
 	counter = 0;
 	while(1){
-		if(GPIO_PORTF_DATA_R & (1<<4)){	// If SW1 is pressed
+		if(GPIO_PORTF_DATA_R & (1<<4)){	// If SW1 is pressed ??
 			GPIO_PORTF_DATA_R &= (0<<1); // Turn off LED at place 1
 
 		} else {
