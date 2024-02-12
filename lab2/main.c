@@ -20,9 +20,9 @@ int main(void)
     //taskA();
     INT16U varb;
     INT16U var2 = 0xFFFF; // X –any number you enter
-    varb = ~0b011111100000 | 0b001111000000;    // Create
+    varb = ~0b011111100000 | 0b001111000000;    // Create 0b1111 1011 1101 1111
     var2 &= varb;
-    //TODO check:)
+
 
 
 
