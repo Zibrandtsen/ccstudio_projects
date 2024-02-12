@@ -1,10 +1,22 @@
+/********** Header ************/
+/********** Include files ************/
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
 
-/**
- * main.c
- */
+/********** Defines ************/
+/********** Constants ************/
+/********** Variabels ************/
+
+
+/********** Functions ************/
+
 int main(void) {
+	/********** 
+	 * Input: 
+	 * Output:
+	 * Function:  
+	 *************/
+
 	int dummy;
 	
 	int counter;
