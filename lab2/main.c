@@ -102,9 +102,9 @@ int taskD(void){
 int main(void)
 {
 
-    //taskA();
-    //taskB();
-    //taskC();
+    // taskA();
+    // taskB();
+    // taskC();
     taskD();
 
 
