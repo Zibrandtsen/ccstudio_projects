@@ -73,6 +73,9 @@ int main(void) {
     SYSCTL_RCGC2_R = SYSCTL_RCGC2_GPIOF; 	// enable the GPIO port that is used for the on-board LEDs and switches
 	dummy = SYSCTL_RCGC2_R;					// dummy read to insert a few cycles after enabling the peripheral
 
+	// GPIO_LOCK_KEY = 0x4C4F434B;				// Unlock the GPIO_CR register
+	GPIO_PORTF_LOCK_R = 0x4C4F434B;
+
 	// Set LED as output
 	GPIO_PORTF_DIR_R = 0x0E;
 
@@ -96,7 +99,6 @@ int main(void) {
 		// } 
 		if(!(GPIO_PORTF_DATA_R & 0x10)){	// When SW1 is pressed
 			
-			rgbLed(counter);
 			
 			while( !ticks );    // Wait for ticks = 1 (while(ticks==0))
 
@@ -105,10 +107,12 @@ int main(void) {
 
 			if( ! --alive_timer ) {
 				alive_timer        = TIM_1_SEC;
+
 				counter++;
 				if (counter > 7){
 					counter = 0;
 				}
+                rgbLed(counter);
 				
 			}
 		}
