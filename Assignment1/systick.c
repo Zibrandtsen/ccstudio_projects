@@ -11,7 +11,7 @@
 
 #define SYSTICK_PRIORITY    0x7E
 
-volatile int ticks = 0;
+volatile long ticks = 0;
 
 void systick_handler(void)
 /*****************************************************************************
