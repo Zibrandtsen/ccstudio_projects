@@ -6,8 +6,8 @@
 
 /********** Defines ************/
 #define TIM_1_SEC 200
-#define DEBOUNCE_TIMEOUT 50
-#define DOUBLE_CLICK_TIMEOUT 150
+#define DEBOUNCE_TIMEOUT 10
+#define DOUBLE_CLICK_TIMEOUT 100
 #define LONG_PRESS_TIMEOUT 400
 
 /********** Constants ************/
@@ -17,7 +17,9 @@ int counter = 0;
 int LED_dir = 1;
 long release = 0;
 long press = 0;
+long press2 = 0;
 int counter2 = 0;
+int press_counter = 0;
 
 
 /********** Functions ************/
@@ -66,16 +68,34 @@ int isButtonPressed(){
 void buttonHandler(void){
 	counter2 = 1;
 	if ((release - press) > DEBOUNCE_TIMEOUT) {
-		GPIO_PORTF_IM_R &= 0x10;
-		ticks = 0;
-		counter2 = 3;	
+		GPIO_PORTF_IM_R &= 0x10;	// Disable interrupt for PF4
+		counter2 = 4;
+		press_counter++;
 
-		while(DOUBLE_CLICK_TIMEOUT > ticks){
-			if(isButtonPressed()){
-				LED_dir = !LED_dir;
-				counter2 = 6;
-			}
+		// int dif = ticks - press;
+		// if (dif > 0 && dif < DOUBLE_CLICK_TIMEOUT) {
+		// 	counter2=7;
+		// 	ticks = 0;
+		// 	press = 0;
+		// 	press_counter = 0;
+		// } 
+
+		int dif = press - press2;
+		if(press > 0 && press2 > 0 && dif > 0 && dif < DOUBLE_CLICK_TIMEOUT){
+			LED_dir = !LED_dir;
+			counter2 = 7;
+		} else {
+			counter2 = 5;
 		}
+		
+		// while(DOUBLE_CLICK_TIMEOUT > ticks){
+		// 	if(isButtonPressed()){
+		// 		LED_dir = !LED_dir;
+		// 		counter2 = 7;
+		// 		setLED(counter2);
+		// 		break;
+		// 	}
+		// }
 		updateCounter(LED_dir);
 
 	} 
@@ -89,14 +109,16 @@ void buttonHandler(void){
 }
 
 void buttonISR(void){
+	
 	if(isButtonPressed()){	// When SW1 is pressed
 		press = ticks;
-		counter2 = 2;
+		// counter2 = 2;
 	}
 	else {					// When SW1 is released
 		release = ticks;
-		counter2 = 4;
+		// counter2 = 4;
 		buttonHandler();
+		press2 = press;
 	}
 
 
@@ -110,8 +132,6 @@ void buttonISR(void){
 }
 
 void setup(){
-	init_systick();
-
 	int dummy;
 	
     SYSCTL_RCGC2_R = SYSCTL_RCGC2_GPIOF; 	// enable the GPIO port that is used for the on-board LEDs and switches
@@ -155,6 +175,7 @@ updateCounter(int direction){
 
 int main(void) {
 	setup();
+	init_systick();
 	// __enable_irq();  // Enable global interrupts
 
 	int alive_timer = TIM_1_SEC;
@@ -162,6 +183,21 @@ int main(void) {
 	
 	while(1){
 		setLED(counter2);
+
+        // while( !ticks );    // Wait for ticks = 1 (while(ticks==0))
+
+        // // The following will be executed every 5mS
+        // ticks--;
+
+        // if( ! --alive_timer )
+        // {
+        //   alive_timer        = TIM_1_SEC;
+        // //   GPIO_PORTF_DATA_R ^= 0x04;
+		// counter2 = 0;
+		
+        // }
+
+
 		// if(!(GPIO_PORTF_DATA_R & 0x10)){	// When SW1 is pressed
 		// 	rgbLed(counter);
 		// 	counter++;
