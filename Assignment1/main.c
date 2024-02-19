@@ -6,8 +6,8 @@
 
 /********** Defines ************/
 #define TIM_1_SEC 200
-#define DEBOUNCE_TIMEOUT 10
-#define DOUBLE_CLICK_TIMEOUT 100
+#define DEBOUNCE_TIMEOUT 5
+#define DOUBLE_CLICK_TIMEOUT 80
 #define LONG_PRESS_TIMEOUT 400
 
 /********** Constants ************/
@@ -84,6 +84,7 @@ void buttonHandler(void){
 		if(press > 0 && press2 > 0 && dif > 0 && dif < DOUBLE_CLICK_TIMEOUT){
 			LED_dir = !LED_dir;
 			counter2 = 7;
+			press = 0; press2 = 0;
 		} else {
 			counter2 = 5;
 		}
@@ -93,7 +94,6 @@ void buttonHandler(void){
 		// 		LED_dir = !LED_dir;
 		// 		counter2 = 7;
 		// 		setLED(counter2);
-		// 		break;
 		// 	}
 		// }
 		updateCounter(LED_dir);
@@ -182,7 +182,7 @@ int main(void) {
 	
 	
 	while(1){
-		setLED(counter2);
+		setLED(counter);
 
         // while( !ticks );    // Wait for ticks = 1 (while(ticks==0))
 
