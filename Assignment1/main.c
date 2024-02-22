@@ -6,30 +6,19 @@
 
 /********** Defines ************/
 #define TIM_1_SEC 200
-#define DEBOUNCE_TIMEOUT 5
-#define DOUBLE_CLICK_TIMEOUT 80
-#define LONG_PRESS_TIMEOUT 400
+#define DEBOUNCE_TIMEOUT 1
+#define DOUBLE_CLICK_TIMEOUT 10
+#define LONG_PRESS_TIMEOUT 200
 
 /********** Constants ************/
 /********** Variabels ************/
 extern int ticks;
 int counter = 0;
 int LED_dir = 1;
-long release = 0;
-long press = 0;
-long press2 = 0;
-int counter2 = 0;
-int press_counter = 0;
+long press_duration = 0;
 
 
 /********** Functions ************/
-
-void delay(int ms){
-	int cycles = 16000 * ms;	// magic number
-	while(cycles){
-		cycles--;
-	}
-}
 
 void setLED(int colour){
 	GPIO_PORTF_DATA_R &= 0b0001;	// Turn off the LED at places 1, 2 and 3
@@ -65,70 +54,40 @@ int isButtonPressed(){
 	return ~GPIO_PORTF_DATA_R & 0x10;
 }
 
+void updateCounter(int direction);
+
 void buttonHandler(void){
-	counter2 = 1;
-	if ((release - press) > DEBOUNCE_TIMEOUT) {
-		GPIO_PORTF_IM_R &= 0x10;	// Disable interrupt for PF4
-		counter2 = 4;
-		press_counter++;
+	ticks = 0;
+	GPIO_PORTF_IM_R &= ~0x10;	// Disable interrupt for PF4
 
-		// int dif = ticks - press;
-		// if (dif > 0 && dif < DOUBLE_CLICK_TIMEOUT) {
-		// 	counter2=7;
-		// 	ticks = 0;
-		// 	press = 0;
-		// 	press_counter = 0;
-		// } 
-
-		int dif = press - press2;
-		if(press > 0 && press2 > 0 && dif > 0 && dif < DOUBLE_CLICK_TIMEOUT){
-			LED_dir = !LED_dir;
-			counter2 = 7;
-			press = 0; press2 = 0;
-		} else {
-			counter2 = 5;
-		}
-		
-		// while(DOUBLE_CLICK_TIMEOUT > ticks){
+	if (press_duration >= LONG_PRESS_TIMEOUT){
+		setLED(0);
+	} else if(press_duration >= DEBOUNCE_TIMEOUT){
+		// while(DEBOUNCE_TIMEOUT >= ticks){
 		// 	if(isButtonPressed()){
 		// 		LED_dir = !LED_dir;
-		// 		counter2 = 7;
-		// 		setLED(counter2);
 		// 	}
+		// 	while(isButtonPressed()){}
 		// }
 		updateCounter(LED_dir);
+		setLED(counter);
+	}
 
-	} 
-	// else if ((release - press) > LONG_PRESS_TIMEOUT) {
-	// 	//set to auto
-	// 	counter2=5;
+
 	// }
-
-	GPIO_PORTF_IM_R = 0x10;
+	GPIO_PORTF_ICR_R |= 0x10;
+	GPIO_PORTF_IM_R |= 0x10;	// Enable interrupt for PF4
 
 }
 
 void buttonISR(void){
-	
 	if(isButtonPressed()){	// When SW1 is pressed
-		press = ticks;
-		// counter2 = 2;
-	}
-	else {					// When SW1 is released
-		release = ticks;
-		// counter2 = 4;
+		ticks = 0;
+	} else {					// When SW1 is released
+		press_duration = ticks;
 		buttonHandler();
-		press2 = press;
 	}
-
-
-	// if(isButtonPressed()){
-	// 	setLED(counter);
-	// 	updateCounter(LED_dir);
-	// 	delay(50);	// Debounce protection
-	// }
-
-    GPIO_PORTF_ICR_R = 0x10;  // Clear the interrupt flag for PF4
+    GPIO_PORTF_ICR_R |= 0x10;  // Clear the interrupt flag for PF4
 }
 
 void setup(){
@@ -163,7 +122,7 @@ void setup(){
 
 }
 
-updateCounter(int direction){
+void updateCounter(int direction){
 	if(direction)
 		counter++;
 	else
@@ -176,52 +135,13 @@ updateCounter(int direction){
 int main(void) {
 	setup();
 	init_systick();
-	// __enable_irq();  // Enable global interrupts
 
 	int alive_timer = TIM_1_SEC;
 	
 	
-	while(1){
-		setLED(counter);
-
-        // while( !ticks );    // Wait for ticks = 1 (while(ticks==0))
-
-        // // The following will be executed every 5mS
-        // ticks--;
-
-        // if( ! --alive_timer )
-        // {
-        //   alive_timer        = TIM_1_SEC;
-        // //   GPIO_PORTF_DATA_R ^= 0x04;
-		// counter2 = 0;
-		
-        // }
-
-
-		// if(!(GPIO_PORTF_DATA_R & 0x10)){	// When SW1 is pressed
-		// 	rgbLed(counter);
-		// 	counter++;
-			
-		// 	if (counter > 7){
-		// 		counter = 0;
-		// 	}
-		// 	// delay(20);
-
-		// } 
-
-		// if(isButtonPressed()){	// When SW1 is pressed
-		// 	setLED(counter);
-		// 	updateCounter(0);
-
-		// 	while(--alive_timer) {
-		// 		while( !ticks );    // Wait for ticks = 1 (while(ticks==0))
-
-		// 		// The following will be executed every 5mS
-		// 		ticks--;
-		// 	}
-		// 	alive_timer        = TIM_1_SEC;
-		// }
-	}
+	// while(1){
+	// 	setLED(counter);
+	// }
 
 	return 0;
 }
