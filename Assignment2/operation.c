@@ -37,6 +37,13 @@
 #define EMP_LED_GREEN 	0x08	// PF3
 #define EMP_LED_OFF		0x00	// All LEDs off
 
+// Traffic light states
+// --------------------
+#define TLS_STOP         0
+#define TLS_GET_SET      1
+#define TLS_GO           2
+#define TLS_HOLD         3
+
 // -EMP-----------LILLE--        
 //  RED          = CYAN
 //  YELLOW       = YELLOW
@@ -60,6 +67,7 @@ void operation( INT8U event )
     static INT8U  operation_value = 0;
     static INT16U operation_timer = 0;
     static INT8U  operation_first_run = 1;
+    static INT8U  traffic_light_state = TLS_STOP;
 
     // If first run, set event to normal
     if (operation_first_run){
@@ -127,7 +135,38 @@ void operation( INT8U event )
                 default:
                     // TODO: Normal operation goes here
                     // operation_timer = TIM_500_MSEC;
-                    GPIO_PORTF_DATA_R |= EMP_LED_GREEN;
+                    // GPIO_PORTF_DATA_R |= EMP_LED_GREEN;
+                    switch (traffic_light_state){
+                    case TLS_STOP:
+                        GPIO_PORTF_DATA_R &= EMP_LED_OFF;
+                        GPIO_PORTF_DATA_R |= EMP_LED_RED;
+                        operation_timer = TIM_2_SEC;
+                        traffic_light_state = TLS_GET_SET;
+                        break;
+
+                    case TLS_GET_SET:
+                        GPIO_PORTF_DATA_R |= EMP_LED_YELLOW;
+                        operation_timer = TIM_2_SEC;
+                        traffic_light_state = TLS_GO;
+                        break;
+
+                    case TLS_GO:
+                        GPIO_PORTF_DATA_R &= EMP_LED_OFF;
+                        GPIO_PORTF_DATA_R |= EMP_LED_GREEN;
+                        operation_timer = TIM_2_SEC;
+                        traffic_light_state = TLS_HOLD;
+                        break;
+
+                    case TLS_HOLD:
+                        GPIO_PORTF_DATA_R &= EMP_LED_OFF;
+                        GPIO_PORTF_DATA_R |= EMP_LED_YELLOW;
+                        operation_timer = TIM_2_SEC;
+                        traffic_light_state = TLS_STOP;
+                        break;
+                    
+                    default:
+                        break;
+                    }
                     break;
             }
             // Continued
