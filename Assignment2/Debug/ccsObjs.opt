@@ -1,6 +1,4 @@
 "./button.obj"
-"./counter.obj"
-"./countled.obj"
 "./gpio.obj"
 "./main.obj"
 "./operation.obj"

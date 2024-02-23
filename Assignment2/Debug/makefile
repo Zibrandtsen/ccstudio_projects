@@ -9,8 +9,6 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./button.obj" \
-"./counter.obj" \
-"./countled.obj" \
 "./gpio.obj" \
 "./main.obj" \
 "./operation.obj" \
@@ -146,8 +144,8 @@ Assignment2.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "button.obj" "counter.obj" "countled.obj" "gpio.obj" "main.obj" "operation.obj" "systick.obj" "tm4c123gh6pm_startup_ccs.obj" 
-	-$(RM) "button.d" "counter.d" "countled.d" "gpio.d" "main.d" "operation.d" "systick.d" "tm4c123gh6pm_startup_ccs.d" 
+	-$(RM) "button.obj" "gpio.obj" "main.obj" "operation.obj" "systick.obj" "tm4c123gh6pm_startup_ccs.obj" 
+	-$(RM) "button.d" "gpio.d" "main.d" "operation.d" "systick.d" "tm4c123gh6pm_startup_ccs.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

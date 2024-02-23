@@ -133,9 +133,7 @@ void operation( INT8U event )
                     break;
 
                 default:
-                    // TODO: Normal operation goes here
-                    // operation_timer = TIM_500_MSEC;
-                    // GPIO_PORTF_DATA_R |= EMP_LED_GREEN;
+                    // Normal operation
                     switch (traffic_light_state){
                     case TLS_STOP:
                         GPIO_PORTF_DATA_R &= EMP_LED_OFF;

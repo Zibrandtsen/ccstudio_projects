@@ -8,8 +8,6 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../button.c \
-../counter.c \
-../countled.c \
 ../gpio.c \
 ../main.c \
 ../operation.c \
@@ -18,8 +16,6 @@ C_SRCS += \
 
 C_DEPS += \
 ./button.d \
-./counter.d \
-./countled.d \
 ./gpio.d \
 ./main.d \
 ./operation.d \
@@ -28,8 +24,6 @@ C_DEPS += \
 
 OBJS += \
 ./button.obj \
-./counter.obj \
-./countled.obj \
 ./gpio.obj \
 ./main.obj \
 ./operation.obj \
@@ -38,8 +32,6 @@ OBJS += \
 
 OBJS__QUOTED += \
 "button.obj" \
-"counter.obj" \
-"countled.obj" \
 "gpio.obj" \
 "main.obj" \
 "operation.obj" \
@@ -48,8 +40,6 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "button.d" \
-"counter.d" \
-"countled.d" \
 "gpio.d" \
 "main.d" \
 "operation.d" \
@@ -58,8 +48,6 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../button.c" \
-"../counter.c" \
-"../countled.c" \
 "../gpio.c" \
 "../main.c" \
 "../operation.c" \
