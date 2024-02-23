@@ -1,19 +1,14 @@
 /*****************************************************************************
 * University of Southern Denmark
 * Embedded C Programming (ECP)
+* Group 7
 *
 * MODULENAME.: operation.c
 *
-* PROJECT....: Assignment2
+* PROJECT....: Assignment 2
 *
 * DESCRIPTION: See module specification file (.h-file).
 *
-* Change Log:
-******************************************************************************
-* Date    Id    Change
-* YYMMDD
-* --------------------
-* 090215  MoH   Module created.
 *
 *****************************************************************************/
 

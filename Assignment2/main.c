@@ -1,19 +1,13 @@
 /*****************************************************************************
 * University of Southern Denmark
-* Embedded Programming (EMP)
+* Embedded Programming (EMP) 2024
+* Group 7
 *
 * MODULENAME.: main.c
 *
-* PROJECT....: EMP
+* PROJECT....: Assignemt 2
 *
-* DESCRIPTION: Assignment 1, main module. No main.h file.
-*
-* Change Log:
-*****************************************************************************
-* Date    Id    Change
-* YYMMDD
-* --------------------
-* 150215  MoH   Module created.
+* DESCRIPTION: Assignment 2, main module. No main.h file.
 *
 *****************************************************************************/
 
@@ -28,10 +22,6 @@
 
 #include "gpio.h"
 /*****************************    Defines    *******************************/
-
-
-/*****************************   Constants   *******************************/
-
 // STOP, RED
 // GET_SET, RED and YELLOW
 // GO, GREEN
@@ -40,6 +30,8 @@
 // NORWEGIAN_NIGHT, flash YELLOW once a second (double click)
 
 // EMERGENCY RED (2 sec hold)
+
+/*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
 extern INT16S ticks;

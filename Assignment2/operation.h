@@ -1,6 +1,7 @@
 /*****************************************************************************
 * University of Southern Denmark
 * Embedded C Programming (ECP)
+* Group 7
 *
 * MODULENAME.: operation.h
 *
@@ -8,12 +9,6 @@
 *
 * DESCRIPTION: Test.
 *
-* Change Log:
-******************************************************************************
-* Date    Id    Change
-* YYMMDD
-* --------------------
-* 090215  MoH   Module created.
 *
 *****************************************************************************/
 
@@ -27,9 +22,6 @@
 /*****************************   Constants   *******************************/
 
 /*****************************   Functions   *******************************/
-void normalOperation(void);
-void emergencyOperation(void);
-void norwegianNight(void);
 
 INT8U operation( INT8U );
 /*****************************************************************************
