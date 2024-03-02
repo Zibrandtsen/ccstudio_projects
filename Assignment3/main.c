@@ -21,7 +21,10 @@
 #include "operation.h"
 
 #include "gpio.h"
+#include "lcd.h"
 /*****************************    Defines    *******************************/
+#define RS 0x04
+#define EN 0x08
 
 /*****************************   Constants   *******************************/
 
@@ -40,30 +43,55 @@ int main(void)
 ******************************************************************************/
 {
 	INT8U event;
+	INT8U operation_value;
 	INT8U alive_timer = TIM_500_MSEC;
 
 	init_systick();
 	init_gpio();
+	init_LCD();
+	// LCD4bits_Cmd(0x01);
+	// LCD4bits_Cmd(0x80);
 
   // Loop forever.
   while(1) {
 	// System part of the super loop.
     // ------------------------------
-	while( !ticks );
+	// while( !ticks );
 
-	// The following will be executed every 5ms
-    ticks--;
+	// // The following will be executed every 5ms
+    // ticks--;
 
-	if( ! --alive_timer )
-	{
-	  alive_timer        = TIM_500_MSEC;
-	  GPIO_PORTD_DATA_R ^= 0x40;
-	}
+	// if( ! --alive_timer )
+	// {
+	//   alive_timer        = TIM_500_MSEC;
+	//   GPIO_PORTD_DATA_R ^= 0x40;
+	// }
 	
 	// Application part of the super loop.
 	// -----------------------------------
 	
+	// event = select_button();
+	// operation( event );
 
+	// ------------------------------
+	// GPIO_PORTC_DATA_R = 0x40;	// 0100
+	// GPIO_PORTD_DATA_R |= EN;	// Enable E
+
+	// GPIO_PORTC_DATA_R = 0x10;	// 0001
+	// ------------------------------
+
+	LCD_Write4bits( 0x00, 0x00);
+	LCD_Write4bits( 0x10, 0x00);
+	delayUs(40);	//delay for LCD (MCU is faster than LCD)
+
+	// ------------------------------
+
+
+
+	// writeChar( 0xC, 0xC );
+	// writeCommand( 0xB );
+	// char* str = "Tiva C Projects";
+	// LCD_WriteString(str);
 
   }
   return( 0 );

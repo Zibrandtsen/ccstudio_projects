@@ -23,8 +23,19 @@
 
 /*****************************   Functions   *******************************/
 
+void init_LCD( void );
 INT8U clearDisplay( INT8U );
 INT8U setCursor( INT8U );
+INT8U writeString( INT8U );
+
+void LCD_WriteString(char * str);
+void LCD4bits_Data(unsigned char data);
+
+void LCD_Write4bits( unsigned char data, unsigned char control );
+void LCD4bits_Cmd( unsigned char command );
+
+void delayMs(int n);
+void delayUs(int n);
 
 /*****************************************************************************
 *   Input    : -
