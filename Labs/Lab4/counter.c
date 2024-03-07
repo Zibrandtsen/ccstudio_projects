@@ -63,16 +63,16 @@ INT8U counter( INT8U event )
 	      {
 	        case BE_SINGLE_PUSH:			// if event is single push
 	          counter_value++;			// increment counter value
-			  uart0_trasmit_string("Count up. ", 10);
+			  uart0_transmit_string("Count up. ", 10);
 	          break;
 	        case BE_DOUBBLE_PUSH:			// if event is double push
 		        counter_state = CS_MAN_DOWN;	// change mode to counting down
-				uart0_trasmit_string("Change mode to counting down. ", 29);
+				uart0_transmit_string("Change mode to counting down. ", 29);
 	          break;
 	        case BE_LONG_PUSH:			// if event is long push
 	            counter_state = CS_AUTO_UP;		// change mode to auto
 		        counter_timer = TIM_200_MSEC;	// and start the timer
-				uart0_trasmit_string("Change mode to auto. ", 20);
+				uart0_transmit_string("Change mode to auto. ", 20);
 	          break;
 	        default:
 	          break;
@@ -83,16 +83,16 @@ INT8U counter( INT8U event )
 	      {
 	        case BE_SINGLE_PUSH:
 	          counter_value--;
-			  uart0_trasmit_string("Count down. ", 12);
+			  uart0_transmit_string("Count down. ", 12);
 	          break;
 	        case BE_DOUBBLE_PUSH:
 		        counter_state = CS_MAN_UP;
-				uart0_trasmit_string("Change mode to counting up. ", 27);
+				uart0_transmit_string("Change mode to counting up. ", 27);
 	          break;
 	        case BE_LONG_PUSH:
 		        counter_timer = TIM_200_MSEC;
 		        counter_state = CS_AUTO_DOWN;
-				uart0_trasmit_string("Change mode to auto. ", 20);
+				uart0_transmit_string("Change mode to auto. ", 20);
 	          break;
 	        default:
 	          break;

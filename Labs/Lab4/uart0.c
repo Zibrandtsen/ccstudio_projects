@@ -30,7 +30,7 @@
 
 
 /*****************************   My Functions   *******************************/
-void uart0_trasmit_string(INT8U *str, INT8U len) {
+void uart0_transmit_string(INT8U *str, INT8U len) {
 	INT8U i;
   	for (i = 0; i < len; i++) {
 		while ( !uart0_tx_rdy() );  // Wait for TX buffer to be empty

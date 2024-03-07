@@ -35,11 +35,18 @@
 #define ARTC_IDLE   0
 #define ARTC_ADJUST 1
 
+#define LCD_NORMAL 0
+#define LCD_DEBUG 1
+
+#define SERIAL_SET_CLOCK = 1
+#define SERIAL_GET_CLOCK = 2
+
 
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
-
+INT8U recived_bytes[6] = {};
+INT8U recived_bytes_len = sizeof(recived_bytes);
 
 /*****************************   Functions   *******************************/
 
@@ -84,7 +91,7 @@ void rtc_task( INT8U task_no )                                      // this task
   }
 }
 
-void display_rtc_task( INT8U task_no )                              // this task displays the clock
+void display_rtc_task( INT8U task_no, INT8U debug )                              // this task displays the clock
 {
   INT8U sec;
   INT8U min;
@@ -96,27 +103,51 @@ void display_rtc_task( INT8U task_no )                              // this task
     {
       if( wait( MUTEX_SYSTEM_RTC ))                                 // wait for the system rtc semaphore
       {
-        sec  = get_msg_state( SSM_RTC_SEC  );                       // read the values for seconds, minutes and hours
-        min  = get_msg_state( SSM_RTC_MIN  );
-        hour = get_msg_state( SSM_RTC_HOUR );
+        switch (debug) {
+        case LCD_DEBUG:
+			// wr_ch_LCD(uart0_receive_byte());
+			
+			// uart0_read_message(recived_bytes, recived_bytes_len);
+			// INT8U i;
+            // for(i = 0; i < recived_bytes_len; i++) {
+			// 	while (!uart0_tx_rdy());
+            //     uart0_putc(recived_bytes[i]);
+            // }
+			
+
+			// if case = '1'
+				// læs recived_bytes
+				// skriv det på skærmen
+			// else
+				// Ingenting
+			break;
         
-        move_LCD( 4, 0 );                                           // move the cursor
-        wr_ch_LCD( (INT8U)(hour/10+'0') );                          // write the first digit of the hour
-        wr_ch_LCD( (INT8U)(hour%10+'0') );                          // write the second digit of the hour
-        if( sec & 0x01 )                                            // if the value for seconds ends in a 1 (so every other second)
-          wr_ch_LCD( ':' );                                         // display a colon
-        else
-          wr_ch_LCD( ' ' );                                         // if the value for seconds ends in a 0, write a blank space
-        wr_ch_LCD( (INT8U)(min/10+'0') );                           // repeat for minutes and seconds...
-        wr_ch_LCD( (INT8U)(min%10+'0') );
-        if( sec & 0x01 )
-          wr_ch_LCD( ' ' );
-        else
-          wr_ch_LCD( ':' );
-        wr_ch_LCD( (INT8U)(sec/10+'0') );
-        wr_ch_LCD( (INT8U)(sec%10+'0') );
-      
-        signal( MUTEX_SYSTEM_RTC );                                 // signal the to mutexes to say we are not using the display anymore
+		case LCD_NORMAL:
+        default:
+			sec  = get_msg_state( SSM_RTC_SEC  );                       // read the values for seconds, minutes and hours
+			min  = get_msg_state( SSM_RTC_MIN  );
+			hour = get_msg_state( SSM_RTC_HOUR );
+			
+			move_LCD( 4, 0 );                                           // move the cursor
+			wr_ch_LCD( (INT8U)(hour/10+'0') );                          // write the first digit of the hour
+			wr_ch_LCD( (INT8U)(hour%10+'0') );                          // write the second digit of the hour
+			if( sec & 0x01 )                                            // if the value for seconds ends in a 1 (so every other second)
+			wr_ch_LCD( ':' );                                         // display a colon
+			else
+			wr_ch_LCD( ' ' );                                         // if the value for seconds ends in a 0, write a blank space
+			wr_ch_LCD( (INT8U)(min/10+'0') );                           // repeat for minutes and seconds...
+			wr_ch_LCD( (INT8U)(min%10+'0') );
+			if( sec & 0x01 )
+			wr_ch_LCD( ' ' );
+			else
+			wr_ch_LCD( ':' );
+			wr_ch_LCD( (INT8U)(sec/10+'0') );
+			wr_ch_LCD( (INT8U)(sec%10+'0') );
+		
+			signal( MUTEX_SYSTEM_RTC );
+			break;
+        }
+                                 // signal the to mutexes to say we are not using the display anymore
       }
       signal( MUTEX_LCD_DISPLAY );
     }

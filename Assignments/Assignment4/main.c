@@ -18,9 +18,6 @@
 extern volatile INT16S ticks;
 INT16S alive_timer = MILLISEC(500);
 
-INT8U recived_bytes[6] = {};
-INT8U recived_bytes_len = sizeof(recived_bytes);
-
 void delayMs(int n)
 {  
 	volatile int i,j;             //volatile is important for variables incremented in code
@@ -68,11 +65,30 @@ int main(void)
 
         // Application mode
         button_task( TASK_BUTTON );
-        rtc_task( TASK_RTC );
-        // display_rtc_task( TASK_RTC_DISPLAY );
+        rtc_task( TASK_RTC );       // Real time clock
+        display_rtc_task( TASK_RTC_DISPLAY, 0 );
         ajust_rtc_task( TASK_RTC_ADJUST );
         lcd_task( TASK_LCD );
+        // uart0_task();
+        int i = 0;
+        char charArray[8] = {};
+        while(uart0_rx_rdy())
+        {
+            // INT8U aahh = uart0_receive_byte();
+            // uart0_transmit_byte(aahh);
 
+            i++;
+            
+            charArray[i] = uart0_getc();
+
+            // char *stringArray = charArray;
+
+            
+        }
+        if (i != 0){
+            uart0_transmit_string(charArray,8);
+            i=0;            
+        }
         
         // recived_bytes = uart0_receive_byte();
         // if('r' == recived_bytes){
@@ -86,24 +102,7 @@ int main(void)
 
         // ---
         // read first byte
-        switch (uart0_receive_byte())
-        {
-        case '1':
-            out_LCD('1');
-            delayMs(30);
-            uart0_read_message(recived_bytes, recived_bytes_len);
-            INT8U i;
-            for(i = 0; i < recived_bytes_len; i++) {
-                out_LCD(recived_bytes[i]);
-            }
-            break;
-        case '2':
-            // send message
-            break;
-        
-        default:
-            break;
-        }
+
         
 
 

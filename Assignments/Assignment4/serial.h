@@ -27,9 +27,17 @@
 /*****************************   Constants   *******************************/
 
 /*****************************   My Functions   *******************************/
-void uart0_trasmit_string(INT8U *str, INT8U len);
+
+void uart0_transmit_string(INT8U *str, INT8U len);
+
+void uart0_transmit_byte(INT8U byte);
 INT8U uart0_receive_byte();
 INT8U * uart0_read_message(INT8U length);
+
+
+
+void uart0_task()
+
 /****************************** End Of Module *******************************/
 #endif
 
