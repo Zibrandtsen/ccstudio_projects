@@ -22,6 +22,8 @@
 #include "tm4c123gh6pm.h"
 #include "emp_type.h"
 #include "uart0.h"
+#include "tmodel.h"
+
 /*****************************    Defines    *******************************/
 
 /*****************************   Constants   *******************************/
@@ -60,23 +62,37 @@ INT8U * uart0_read_message(INT8U* buffer, INT8U length) {
 }
 
 
-
-
 void uart0_task(){
+    INT8U hour;
+    INT8U min;
+    INT8U sec;
     if(uart0_rx_rdy()){
 
         switch (uart0_receive_byte())
         {
         case '1':
-            out_LCD('1');
-            // delayMs(30);
-            // uart0_read_message(recived_bytes, recived_bytes_len);
-            // INT8U i;
-            // for(i = 0; i < recived_bytes_len; i++) {
-            //     out_LCD(recived_bytes[i]);
-            // }
+            uart0_transmit_byte('1');
+
+            // TODO: Check if values hour, min and sec are valid
+
+            // read values for hour
+            hour = (uart0_receive_byte() - '0') * 10;
+            hour += (uart0_receive_byte() - '0');
+            put_msg_state( SSM_RTC_HOUR, hour );                    // send a message with the hour value
+
+            // read values for min
+            min = (uart0_receive_byte() - '0') * 10;
+            min += (uart0_receive_byte() - '0');
+            put_msg_state( SSM_RTC_MIN, min );                    // send a message with the hour value
+
+            // read values for sec
+            sec = (uart0_receive_byte() - '0') * 10;
+            sec += (uart0_receive_byte() - '0');
+            put_msg_state( SSM_RTC_SEC, sec );                    // send a message with the hour value
+
             break;
         case '2':
+            uart0_transmit_byte('2');
             // send message
             break;
         

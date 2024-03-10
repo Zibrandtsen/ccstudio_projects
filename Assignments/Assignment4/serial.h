@@ -35,7 +35,6 @@ INT8U uart0_receive_byte();
 INT8U * uart0_read_message(INT8U length);
 
 
-
 void uart0_task()
 
 /****************************** End Of Module *******************************/

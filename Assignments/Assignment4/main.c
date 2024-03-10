@@ -66,29 +66,32 @@ int main(void)
         // Application mode
         button_task( TASK_BUTTON );
         rtc_task( TASK_RTC );       // Real time clock
-        display_rtc_task( TASK_RTC_DISPLAY, 0 );
+        display_rtc_task( TASK_RTC_DISPLAY );
         ajust_rtc_task( TASK_RTC_ADJUST );
         lcd_task( TASK_LCD );
-        // uart0_task();
-        int i = 0;
-        char charArray[8] = {};
-        while(uart0_rx_rdy())
-        {
-            // INT8U aahh = uart0_receive_byte();
-            // uart0_transmit_byte(aahh);
+        uart0_task();
 
-            i++;
+////
+        // ------------------------------
+        // w//le(uart0_rx_rdy()) {
+        //     // // Echo
+        //     // INT8U aahh = uart0_receive_byte();
+        //     // uart0_transmit_byte(aahh);
+
+        //     i++;
             
-            charArray[i] = uart0_getc();
-
-            // char *stringArray = charArray;
-
+        //     charArray[i] = uart0_getc();
             
-        }
-        if (i != 0){
-            uart0_transmit_string(charArray,8);
-            i=0;            
-        }
+        //     // char *stringArray = charArray;
+    
+        // }
+        // if (i > 1){
+        //     // uart0_transmit_string(charArray, 8);
+        //     uart0_transmit_byte('r');
+        //     i = 0;         
+        // }
+        // ------------------------------
+
         
         // recived_bytes = uart0_receive_byte();
         // if('r' == recived_bytes){
