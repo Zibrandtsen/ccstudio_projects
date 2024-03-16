@@ -40,6 +40,7 @@ int main(void)
     signal( MUTEX_SYSTEM_RTC );
     signal( MUTEX_LCD_DISPLAY );
     signal( SEM_RTC_UPDATED );
+    signal( MUTEX_UART0 );
 
     // INT8U recived_bytes;
     clr_LCD();

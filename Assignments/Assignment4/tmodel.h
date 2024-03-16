@@ -37,8 +37,6 @@
 
 // Shared State Memory.
 // --------------------
-
-
 #define SSM_RTC_SEC  31
 #define SSM_RTC_MIN  32
 #define SSM_RTC_HOUR 33
