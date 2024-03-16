@@ -127,7 +127,7 @@ void uart0_task(){
                 signal( MUTEX_SYSTEM_RTC );  // release RTC mutex
             }
 
-            if (wait ( MUTEX_UART0 )) {  // wait for UART0 TX mutex
+            // if (wait ( MUTEX_UART0 )) {  // wait for UART0 TX mutex
                 // Send command
                 uart0_transmit_byte('2');
 
@@ -139,8 +139,8 @@ void uart0_task(){
 
                 uart0_transmit_byte( (sec / 10) + '0' );
                 uart0_transmit_byte( (sec % 10) + '0' );
-                signal( MUTEX_UART0 );   // release UART0 TX mutex
-            }
+            //     signal( MUTEX_UART0 );   // release UART0 TX mutex
+            // }
 
             break;
         
