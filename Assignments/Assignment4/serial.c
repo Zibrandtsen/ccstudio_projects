@@ -28,6 +28,10 @@
 #define SERIAL_SET_CLOCK '1'
 #define SERIAL_GET_CLOCK '2'
 
+#define SERIAL_ERROR_INVALID_HOUR 1
+#define SERIAL_ERROR_INVALID_MIN  2
+#define SERIAL_ERROR_INVALID_SEC  3
+
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
@@ -66,6 +70,7 @@ INT8U * uart0_read_message(INT8U* buffer, INT8U length) {
 
 void uart0_task(){
     INT8U hour, min, sec;
+    INT8U error = 0;
     if(uart0_rx_rdy()){
 
         switch (uart0_receive_byte())
@@ -73,36 +78,69 @@ void uart0_task(){
         case SERIAL_SET_CLOCK:       // SET CLOCK
             // TODO: Check if values hour, min and sec are valid
 
-            // read values for hour
-            hour =  (uart0_receive_byte() - '0') * 10;
-            hour += (uart0_receive_byte() - '0');
-            put_msg_state( SSM_RTC_HOUR, hour );        // send a message with the hour value
+            // if (wait ( MUTEX_UART0 )){
+                hour =  (uart0_receive_byte() - '0') * 10;
+                hour += (uart0_receive_byte() - '0');
 
-            // read values for min
-            min =  (uart0_receive_byte() - '0') * 10;
-            min += (uart0_receive_byte() - '0');
-            put_msg_state( SSM_RTC_MIN, min );          // send a message with the hour value
+                min =  (uart0_receive_byte() - '0') * 10;
+                min += (uart0_receive_byte() - '0');
 
-            // read values for sec
-            sec =  (uart0_receive_byte() - '0') * 10;
-            sec += (uart0_receive_byte() - '0');
-            put_msg_state( SSM_RTC_SEC, sec );          // send a message with the hour value
+                sec =  (uart0_receive_byte() - '0') * 10;
+                sec += (uart0_receive_byte() - '0');
+
+            //     signal( MUTEX_UART0 );
+            // }
+
+            if (wait ( MUTEX_LCD_DISPLAY )) {     // MUTEX_SYSTEM_RTC
+                if (0 <= hour && hour <= 23) {
+                    if (0 <= min && min <= 59) {
+                        if (0 <= sec && sec <= 59) {
+                            put_msg_state( SSM_RTC_HOUR, hour );
+                            put_msg_state( SSM_RTC_MIN, min );
+                            put_msg_state( SSM_RTC_SEC, sec );
+                        } else {
+                            error = SERIAL_ERROR_INVALID_SEC;
+                        }
+                    } else {
+                        error = SERIAL_ERROR_INVALID_MIN;
+                    }
+                } else {
+                    error = SERIAL_ERROR_INVALID_HOUR;
+                }
+
+
+                signal( MUTEX_LCD_DISPLAY );
+            }
+            if (error) {
+                // if (wait( MUTEX_UART0 )) {
+                    uart0_transmit_string("Error: Invalied time", 20);
+                //     signal( MUTEX_UART0 );
+                // }
+            }
 
             break;
-        case SERIAL_GET_CLOCK:       // GET CLOCK
-            uart0_transmit_byte('2');
+        case SERIAL_GET_CLOCK:
+            if (wait( MUTEX_SYSTEM_RTC )){   // wait for RTC mutex
+                hour = get_msg_state( SSM_RTC_HOUR );
+                min = get_msg_state( SSM_RTC_MIN );
+                sec = get_msg_state( SSM_RTC_SEC );
+                signal( MUTEX_SYSTEM_RTC );  // release RTC mutex
+            }
 
-            hour = get_msg_state( SSM_RTC_HOUR );
-            uart0_transmit_byte( (hour / 10) + '0' );
-            uart0_transmit_byte( (hour % 10) + '0' );
+            if (wait ( MUTEX_UART0 )) {  // wait for UART0 TX mutex
+                // Send command
+                uart0_transmit_byte('2');
 
-            min = get_msg_state( SSM_RTC_MIN );
-            uart0_transmit_byte( (min / 10) + '0' );
-            uart0_transmit_byte( (min % 10) + '0' );
+                uart0_transmit_byte( (hour / 10) + '0' );
+                uart0_transmit_byte( (hour % 10) + '0' );
 
-            sec = get_msg_state( SSM_RTC_SEC );
-            uart0_transmit_byte( (sec / 10) + '0' );
-            uart0_transmit_byte( (sec % 10) + '0' );
+                uart0_transmit_byte( (min / 10) + '0' );
+                uart0_transmit_byte( (min % 10) + '0' );
+
+                uart0_transmit_byte( (sec / 10) + '0' );
+                uart0_transmit_byte( (sec % 10) + '0' );
+                signal( MUTEX_UART0 );   // release UART0 TX mutex
+            }
 
             break;
         

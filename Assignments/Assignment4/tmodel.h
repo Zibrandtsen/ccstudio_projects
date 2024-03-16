@@ -39,16 +39,16 @@
 // --------------------
 
 
-#define SSM_RTC_SEC            31
-#define SSM_RTC_MIN            32
-#define SSM_RTC_HOUR           33
+#define SSM_RTC_SEC  31
+#define SSM_RTC_MIN  32
+#define SSM_RTC_HOUR 33
 
 // Shared Event Buffers.
 // ---------------------
-#define SEB_BUTTON_EVENT 41
-#define SEB_TO_BUTTON 42 // Time Out
+#define SEB_BUTTON_EVENT     41
+#define SEB_TO_BUTTON        42 // Time Out
 #define SEB_TO_TRAFFIC_LIGHT 43 // Time Out
-#define SEB_TO_RTC 44 // Time Out
+#define SEB_TO_RTC           44 // Time Out
 
 // Semaphores
 // ----------
@@ -59,6 +59,7 @@
 #define MUTEX_LCD_DISPLAY 4
 #define MUTEX_SYSTEM_RTC  5
 #define SEM_LCD_DISPLAY   6
+#define MUTEX_UART0       7
 
 // QUEUEs.
 // -------
