@@ -71,52 +71,6 @@ int main(void)
         lcd_task( TASK_LCD );
         uart0_task();
 
-////
-        // ------------------------------
-        // w//le(uart0_rx_rdy()) {
-        //     // // Echo
-        //     // INT8U aahh = uart0_receive_byte();
-        //     // uart0_transmit_byte(aahh);
-
-        //     i++;
-            
-        //     charArray[i] = uart0_getc();
-            
-        //     // char *stringArray = charArray;
-    
-        // }
-        // if (i > 1){
-        //     // uart0_transmit_string(charArray, 8);
-        //     uart0_transmit_byte('r');
-        //     i = 0;         
-        // }
-        // ------------------------------
-
-        
-        // recived_bytes = uart0_receive_byte();
-        // if('r' == recived_bytes){
-        //     GPIO_PORTF_DATA_R |= 0x04;
-        //     out_LCD(recived_bytes);
-        // } else if('c' == recived_bytes) {
-        //     clr_LCD();
-        // }else {
-        //     GPIO_PORTF_DATA_R &= ~0x04;
-        // }
-
-        // ---
-        // read first byte
-
-        
-
-
-        // // update recived_bytes
-        // uart0_read_message(recived_bytes, recived_bytes_len);
-
-        // char recived_bytes_str[8];
-        // wr_str_LCD(strcpy(recived_bytes_str, (char*)recived_bytes));
-
-
-
     }
     return( 0 );
 }
