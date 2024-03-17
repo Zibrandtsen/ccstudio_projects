@@ -30,12 +30,15 @@
 
 void uart0_transmit_byte(INT8U byte);
 void uart0_transmit_string(INT8U *str, INT8U len);
+void uart0_transmit_queue(INT8U id, INT8U len)
 
 INT8U uart0_receive_byte();
 INT8U * uart0_read_message(INT8U length);
 
 
-void uart0_task()
+void uart0_task();
+INT8U queue_get_time_unit(INT8U id);
+void queue_put_time_unit(INT8U id, INT8U time_unit);
 
 /****************************** End Of Module *******************************/
 #endif

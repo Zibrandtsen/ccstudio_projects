@@ -45,6 +45,10 @@ int main(void)
     // INT8U recived_bytes;
     clr_LCD();
 
+    // Open the queues
+    queue_open(Q_UART_RX);
+    queue_open(Q_UART_TX);
+
     // Loop forever.
     while(1)
     {
@@ -52,7 +56,7 @@ int main(void)
         // ------------------------------
         while( !ticks );
 
-        // The following will be executed every 5mS
+        // The following will be executed every 5mSS
         ticks--;
 
         if( ! --alive_timer )

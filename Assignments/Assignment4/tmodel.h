@@ -62,6 +62,8 @@
 // QUEUEs.
 // -------
 #define Q_OUTPUT 1
+#define Q_UART_RX  2
+#define Q_UART_TX  3
 
 // Traffic Light Modes.
 // --------------------
