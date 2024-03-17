@@ -125,7 +125,7 @@ void uart0_task(){
             }
             
             // Update time on LCD
-            if (wait ( MUTEX_LCD_DISPLAY )) {     // MUTEX_SYSTEM_RTC
+            if (wait ( MUTEX_LCD_DISPLAY )) {
                 put_msg_state( SSM_RTC_HOUR, hour );
                 put_msg_state( SSM_RTC_MIN, min );
                 put_msg_state( SSM_RTC_SEC, sec );
