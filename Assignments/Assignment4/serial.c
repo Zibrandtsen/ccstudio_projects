@@ -35,15 +35,13 @@
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
-// INT8U recived_bytes[6] = {};
-// INT8U recived_bytes_len = sizeof(recived_bytes);
 
 
 /*****************************   Functions   *******************************/
 // transmit funcs
 void uart0_transmit_byte(INT8U byte) {
     while ( !uart0_tx_rdy() );  // Wait for TX buffer to be empty
-    uart0_putc(byte);        // Transmit character
+    uart0_putc(byte);           // Transmit character
 }
 
 void uart0_transmit_string(char *str, INT8U len) {
@@ -53,7 +51,7 @@ void uart0_transmit_string(char *str, INT8U len) {
   	}
 }
 
-// receove funcs
+// receive funcs
 INT8U uart0_receive_byte() {
   while ( !uart0_rx_rdy() );  // Wait for RX buffer to be full
   return uart0_getc();        // Read character
@@ -67,7 +65,7 @@ INT8U * uart0_read_message(INT8U* buffer, INT8U length) {
     return buffer;
 }
 
-
+// task
 void uart0_task(){
     INT8U hour, min, sec;
     INT8U error = 0;
