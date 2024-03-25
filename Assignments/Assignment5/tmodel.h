@@ -30,6 +30,7 @@
 #define TASK_UART_RX     USER_TASK+3
 #define TASK_UI          USER_TASK+4
 #define TASK_UART_TX     USER_TASK+5
+#define TASK_KEYPAD      USER_TASK+6
 
 
 // Interrupt Service Routines.
@@ -40,6 +41,7 @@
 // -----------
 #define SEM_LCD          USER_SEM
 #define SEM_RTC_UPDATED  USER_SEM+1
+#define SEM_SW1          USER_SEM+2
 
 
 // Shared State Memory.

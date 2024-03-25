@@ -8,6 +8,7 @@
 #include "rtc.h"
 #include "lcd.h"
 #include "uart.h"
+#include "keypad.h"
 
 
 int main(void)
@@ -18,6 +19,7 @@ int main(void)
 ******************************************************************************/
 {
   init_gpio();
+  init_keypad();
 
   // uart0_init( 9600, 8, 1, 'n' );
 
@@ -32,6 +34,7 @@ int main(void)
   start_task( TASK_LCD, lcd_task );
   // start_task( TASK_UART_TX, uart_tx_task );
   // start_task( TASK_UART_RX, uart_rx_task );
+  start_task( TASK_KEYPAD, keypad_task );
 
   schedule();
   return( 0 );
