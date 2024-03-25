@@ -5,13 +5,9 @@
 #include "systick.h"
 #include "tmodel.h"
 #include "systick.h"
-#include "rtc.h"
-#include "lcd.h"
-#include "uart.h"
-#include "ui.h"
+#include "sw1.h"
+#include "led.h"
 
-#include "led_tasks.h"
-#include "button.h"
 
 int main(void)
 /*****************************************************************************
@@ -22,24 +18,15 @@ int main(void)
 {
   init_gpio();
 
-  // uart0_init( 9600, 8, 1, 'n' );
-
+  GPIO_PORTF_DATA_R |= 0x04;
+  GPIO_PORTF_DATA_R |= 0x08;
   init_rtcs();
 
-  // open_queue( Q_UART_TX );
-  // open_queue( Q_UART_RX );
-  open_queue( Q_LCD );
 
-  start_task( TASK_RTC, rtc_task );
-  start_task( TASK_DISPLAY_RTC, display_rtc_task );
-  start_task( TASK_LCD, lcd_task );
-  // start_task( TASK_UART_TX, uart_tx_task );
-  // start_task( TASK_UART_RX, uart_rx_task );
-  // start_task( TASK_UI, ui_task );
-  // start_task( TASK_RED_LED, red_led_task );
-  start_task( TASK_RED_LED, red_led_task );
   start_task( TASK_SW1, sw1_task );
-  // start_task( TASK_BUTTON, select_button );
+  start_task( TASK_LED_R, red_led_task);
+  start_task( TASK_LED_Y, yellow_led_task);
+  start_task( TASK_LED_G, green_led_task);
 
   schedule();
   return( 0 );

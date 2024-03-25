@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
+#include "emp_type.h"
 
 
 
@@ -11,7 +12,7 @@
 
 #define SYSTICK_PRIORITY    0x7E
 
-volatile int ticks = 0;
+volatile INT16S ticks = 0;
 
 void systick_handler(void)
 /*****************************************************************************
@@ -21,6 +22,21 @@ void systick_handler(void)
   // Hardware clears systick int reguest
   ticks++;
 }
+
+/*
+void enable_global_int()
+{
+  // enable interrupts.
+  __asm("cpsie i");
+}
+
+void disable_global_int()
+{
+  // disable interrupts.
+  __asm("cpsid i");
+}
+*/
+
 
 
 void init_systick()
@@ -51,3 +67,4 @@ void init_systick()
   // Enable and start timer
   NVIC_ST_CTRL_R |= NVIC_ST_CTRL_ENABLE;
 }
+

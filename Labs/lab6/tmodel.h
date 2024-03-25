@@ -6,7 +6,7 @@
 *
 * PROJECT....: ECP
 *
-* DESCRIPTION: Defines the elemtn of the task model..
+* DESCRIPTION: Defines the elements of the task model.
 *
 * Change Log:
 ******************************************************************************
@@ -24,19 +24,10 @@
 
 // Tasks.
 // ------
-#define TASK_RTC         USER_TASK
-#define TASK_DISPLAY_RTC USER_TASK+1
-#define TASK_LCD         USER_TASK+2
-#define TASK_UART_RX     USER_TASK+3
-#define TASK_UI          USER_TASK+4
-#define TASK_UART_TX     USER_TASK+5
-
-#define TASK_RED_LED     USER_TASK+6
-#define TASK_YELLOW_LED  USER_TASK+7
-#define TASK_GREEN_LED   USER_TASK+8
-#define TASK_SW1         USER_TASK+9
-#define TASK_BUTTON      USER_TASK+10
-
+#define TASK_SW1         USER_TASK
+#define TASK_LED_R       USER_TASK+1
+#define TASK_LED_Y       USER_TASK+2
+#define TASK_LED_G       USER_TASK+3
 
 // Interrupt Service Routines.
 // ---------------------------
@@ -44,20 +35,14 @@
 
 // Semaphores.
 // -----------
-#define SEM_LCD          USER_SEM
-#define SEM_RTC_UPDATED  USER_SEM+1
-#define SEM_SW1          USER_SEM+2
-
-
+#define SEM_SW1          USER_SEM
+#define SEM_LED_ON       USER_SEM+1
 
 // Shared State Memory.
 // --------------------
 #define SSM_RTC_SEC            31
 #define SSM_RTC_MIN            32
 #define SSM_RTC_HOUR           33
-
-#define SSM_SW1_PUSHED         34
-#define SSM_SW1_RELEASED       35
 
 // QUEUEs.
 // -------
