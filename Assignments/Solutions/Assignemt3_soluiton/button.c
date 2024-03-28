@@ -41,7 +41,7 @@ INT8U    dummy1;
 INT16S   dummy2;
 
 /*****************************   Functions   *******************************/
-INT8U button_pushed()
+INT8U sw1_pushed()
 {
   return( !(GPIO_PORTF_DATA_R & 0x10) );
 }
@@ -61,7 +61,7 @@ void button_task( INT8U task_no )
   switch( button_state )
   {
     case BS_IDLE:
-	    if( button_pushed( ))		// if button pushed
+	    if( sw1_pushed( ))		// if button pushed
 	    {
         button_state = BS_FIRST_PUSH;
 	      start_swtimer( ST_BUTTON, SEB_TO_BUTTON, MILLISEC(2000) );
@@ -75,7 +75,7 @@ void button_task( INT8U task_no )
 	    }
 	    else
 	    {
-        if(  !button_pushed( ) )	// if button released
+        if(  !sw1_pushed( ) )	// if button released
 		    {
 	        button_state = BS_FIRST_RELEASE;
 	        start_swtimer( ST_BUTTON, SEB_TO_BUTTON, MILLISEC(100) );
@@ -90,7 +90,7 @@ void button_task( INT8U task_no )
 	    }
 	    else
 	    {
-        if(  button_pushed(  ))		// if button pressed
+        if(  sw1_pushed(  ))		// if button pressed
 		    {
 	        button_state = BS_SECOND_PUSH;
           start_swtimer( ST_BUTTON, SEB_TO_BUTTON, MILLISEC( 2000 ));
@@ -105,7 +105,7 @@ void button_task( INT8U task_no )
       }
 	    else
 	    {
-        if( ! button_pushed( ) )					// if button released
+        if( ! sw1_pushed( ) )					// if button released
 		    {
 	        button_state = BS_IDLE;
 	        put_msg_event( SEB_BUTTON_EVENT, BE_DOUBBLE_PUSH );
@@ -113,7 +113,7 @@ void button_task( INT8U task_no )
 	    }
 	    break;
     case BS_LONG_PUSH:
-      if( ! button_pushed(  ) )					// if button released
+      if( ! sw1_pushed(  ) )					// if button released
 	      button_state = BS_IDLE;
 	    break;
     default:

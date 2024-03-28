@@ -39,7 +39,7 @@
 /*****************************   Variables   *******************************/
 
 /*****************************   Functions   *******************************/
-INT8U button_pushed()
+INT8U sw1_pushed()
 {
   return( !(GPIO_PORTF_DATA_R & 0x10) );                                // SW1 at PF4
 }
@@ -60,7 +60,7 @@ void button_task( INT8U task_no )
   switch( button_state )
   {
     case BS_IDLE:
-	    if( button_pushed( ))		                                    // if button pushed
+	    if( sw1_pushed( ))		                                    // if button pushed
 	    {
 	        button_state = BS_FIRST_PUSH;                               // we go from the idle state to first push
 	        start_swtimer( ST_BUTTON, SEB_TO_BUTTON, MILLISEC(2000) );  // we set a timer of 2s to see if this is a long push
@@ -74,7 +74,7 @@ void button_task( INT8U task_no )
 	    }
 	    else
 	    {
-        if( !button_pushed() )	                                        // if button released before the timer runs out it was a normal push
+        if( !sw1_pushed() )	                                        // if button released before the timer runs out it was a normal push
 		{
             button_state = BS_FIRST_RELEASE;
 	        start_swtimer( ST_BUTTON, SEB_TO_BUTTON, MILLISEC(100) );   // we set a new timer to see if the button is pressed again shortly after (double push)
@@ -89,7 +89,7 @@ void button_task( INT8U task_no )
 	    }
 	    else
 	    {
-        if( button_pushed() )		                                    // if button is pressed again before the timer runs out it was a double push
+        if( sw1_pushed() )		                                    // if button is pressed again before the timer runs out it was a double push
 		{
 	        button_state = BS_SECOND_PUSH;
 	        start_swtimer( ST_BUTTON, SEB_TO_BUTTON, MILLISEC( 2000 )); // we set a new timer to see if it is a long push
@@ -104,7 +104,7 @@ void button_task( INT8U task_no )
         }
 	    else
 	    {
-        if( !button_pushed() )					                        // if button released before the timer runs out it was a double push
+        if( !sw1_pushed() )					                        // if button released before the timer runs out it was a double push
 		{
 	        button_state = BS_IDLE;
 	        put_msg_event( SEB_BUTTON_EVENT, BE_DOUBBLE_PUSH );
@@ -112,7 +112,7 @@ void button_task( INT8U task_no )
 	    }
 	    break;
     case BS_LONG_PUSH:
-        if( !button_pushed() )					                        // when the button is released after a long push we go back to the idle state
+        if( !sw1_pushed() )					                        // when the button is released after a long push we go back to the idle state
             button_state = BS_IDLE;
 	    break;
     default:

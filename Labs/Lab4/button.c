@@ -36,7 +36,7 @@
 /*****************************   Variables   *******************************/
 
 /*****************************   Functions   *******************************/
-INT8U button_pushed()
+INT8U sw1_pushed()
 {
   return( !(GPIO_PORTF_DATA_R & 0x10) );  // SW at PF4
 }
@@ -55,7 +55,7 @@ INT8U select_button(void)
   switch( button_state )
   {
     case BS_IDLE:
-	    if( button_pushed() )		            // if button pushed
+	    if( sw1_pushed() )		            // if button pushed
 	    {
 	        button_state = BS_FIRST_PUSH;
 		    button_timer = TIM_2_SEC;		    // start timer = 2 sec;
@@ -69,7 +69,7 @@ INT8U select_button(void)
 	    }
 	    else
 	    {
-	        if( !button_pushed() )	                // if button released
+	        if( !sw1_pushed() )	                // if button released
 			{
 		        button_state = BS_FIRST_RELEASE;
 			    button_timer = TIM_100_MSEC;	    // start timer = 100 milli sec;
@@ -84,7 +84,7 @@ INT8U select_button(void)
 	    }
 	    else
 	    {
-	        if( button_pushed() )		            // if button pressed
+	        if( sw1_pushed() )		            // if button pressed
 			{
 		         button_state = BS_SECOND_PUSH;
 			     button_timer = TIM_2_SEC;		    // start timer = 2 sec;
@@ -99,7 +99,7 @@ INT8U select_button(void)
 	    }
 	    else
 	    {
-	        if( !button_pushed() )				    // if button released
+	        if( !sw1_pushed() )				    // if button released
 			{
 		          button_state = BS_IDLE;
 			      button_event = BE_DOUBBLE_PUSH;
@@ -107,7 +107,7 @@ INT8U select_button(void)
 	    }
 	    break;
     case BS_LONG_PUSH:
-        if( !button_pushed() )					// if button released
+        if( !sw1_pushed() )					// if button released
             button_state = BS_IDLE;
 	    break;
     default:

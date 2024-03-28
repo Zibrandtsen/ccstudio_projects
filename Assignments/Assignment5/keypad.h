@@ -33,7 +33,7 @@ void keypad_task(INT8U id, INT8U state, INT8U event, INT8U data);
 *   Output   : -
 *   Function : Test function
 ******************************************************************************/
-
+void keypad_task2(INT8U my_id, INT8U my_state, INT8U event, INT8U data);
 
 /****************************** End Of Module *******************************/
 #endif
