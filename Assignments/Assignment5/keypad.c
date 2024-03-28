@@ -55,19 +55,23 @@ char keys[ROWS][COLS] = {
 
 
 /*****************************   Functions   *******************************/
-INT8U sw1_pushed()
-{
-    return( (!( GPIO_PORTF_DATA_R & 0x10 )) );
+void delay (volatile unsigned int delay) {
+    volatile unsigned int i, j;
+    for (i=0; i<delay; i++);
+        for (j=0; j<12; j++);
 }
 
-// TODO key row and key col functions / return
+INT8U sw1_pushed()
+{
+    return( !( GPIO_PORTF_DATA_R & 0x10 ) );
+}
 
 INT8U key_row_pushed(){     // Y
-    return (GPIO_PORTE_DATA_R & 0x0F);
+    return ( !(GPIO_PORTE_DATA_R & 0x0F) );
 }
 
 INT8U key_col_pushed(){     // X
-    return (GPIO_PORTA_DATA_R & 0x1C);
+    return ( !( GPIO_PORTA_DATA_R & 0x1C ) );
 }
 
 char keypad_scan() {
@@ -83,6 +87,7 @@ char keypad_scan() {
             // Check if any key is pressed
             if (!(GPIO_PORTE_DATA_R & (1 << col))) {
                 // Key pressed, return corresponding character
+                GPIO_PORTF_DATA_R ^= 0x08;  // TODO remove
                 return keys[row][col];
             }
         }
@@ -117,11 +122,12 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
 
     // Continuously scan for key presses
     pressed_key = keypad_scan();
+    delay(160000);
     // Process the pressed key
     switch (pressed_key) {
         case '1':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
+            GPIO_PORTF_DATA_R ^= 0x02;
+            break;
         case '2':
             // GPIO_PORTF_DATA_R ^= 0x02;
             // break;
@@ -150,19 +156,20 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
             // GPIO_PORTF_DATA_R ^= 0x02;
             // break;
         case '0':
-            // GPIO_PORTF_DATA_R ^= 0x02;
+            GPIO_PORTF_DATA_R ^= 0x04;
             // break;
         case '#':
-            GPIO_PORTF_DATA_R &= ~0x02;
+            // GPIO_PORTF_DATA_R &= ~0x02;
             break;
         case '\0':
             // GPIO_PORTF_DATA_R &= ~0x08;
-            // GPIO_PORTF_DATA_R |= 0x02;
+            GPIO_PORTF_DATA_R ^= 0x04;
             break;
         default:
             //GPIO_PORTF_DATA_R &= ~0x02;
             break;
     }
+
 
 }
 

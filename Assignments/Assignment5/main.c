@@ -31,7 +31,7 @@ int main(void)
 	open_queue( Q_LCD );
 
 	start_task( TASK_RTC, rtc_task );
-	start_task( TASK_DISPLAY_RTC, display_rtc_task );
+	// start_task( TASK_DISPLAY_RTC, display_rtc_task );
 	start_task( TASK_LCD, lcd_task );
 	// start_task( TASK_UART_TX, uart_tx_task );
 	// start_task( TASK_UART_RX, uart_rx_task );

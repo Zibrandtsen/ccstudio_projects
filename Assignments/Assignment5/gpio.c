@@ -69,24 +69,24 @@ void init_keypad(void) {
 	// KeyB J: PE2  - Y2
 	// KeyB K: PE3  - Y1
 
-	int dummy;
+	int dummy;	
 
+	// Enable clock for port A and E
 	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOA | SYSCTL_RCGC2_GPIOE;
 
 	// Do a dummy read to insert a few cycles after enabling the peripheral.
 	dummy = SYSCTL_RCGC2_R;
 
-	// Set the direction as output
-	GPIO_PORTA_DIR_R |= 0x1C;
-	GPIO_PORTE_DIR_R |= 0x0F;
-
-	// Enable the GPIO pins for digital function
+	// Configure PortA as digital input
 	GPIO_PORTA_DEN_R |= 0x1C;
+	GPIO_PORTA_DIR_R &= ~0x1C;
+	// GPIO_PORTA_PUR_R |= 0x1C;
+	GPIO_PORTA_PDR_R |= 0x1C;
+	
+	// Configure PortE as digital output
 	GPIO_PORTE_DEN_R |= 0x0F;
-
-	// Enable internal pull-up
-	GPIO_PORTA_PUR_R |= 0x1C;
-	GPIO_PORTE_PUR_R |= 0x0F;
+	GPIO_PORTE_DIR_R |= 0x0F;
+	// GPIO_PORTE_PUR_R |= 0x0F;
 
 }
 
