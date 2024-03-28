@@ -87,7 +87,7 @@ char keypad_scan() {
         for (col = 0; col < COLS; col++) {
             // Check if any key is pressed
             if ( (GPIO_PORTE_DATA_R & 0x0F) == (1 << col) ) {
-                GPIO_PORTF_DATA_R ^= 0x08;  // TODO remove
+                // GPIO_PORTF_DATA_R ^= 0x08;  // TODO remove
                 // Key pressed, return corresponding character
                 return keys[row][col];
             }
@@ -128,51 +128,51 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
     
     // Process the pressed key
     switch (pressed_key) {
-        case '1':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '2':
-            GPIO_PORTF_DATA_R ^= 0x02;
+        case '1':   // * or 0
+            // GPIO_PORTF_DATA_R |= 0x08;
             break;
-        case '3':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '4':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '5':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '6':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '7':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '8':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '9':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '*':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '0':
-            // GPIO_PORTF_DATA_R ^= 0x02;
-            // break;
-        case '#':
-            // GPIO_PORTF_DATA_R ^= 0x08;
+        case '2':   // 7 or 8
+            // GPIO_PORTF_DATA_R |= 0x04;
+            break;
+        case '3':   // 
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '4':   // #
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '5':   // 9
+            GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '6':   //
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '7':   //
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '8':   //
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '9':   //
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '*':   //
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '0':   // (5+8)
+            // GPIO_PORTF_DATA_R |= 0x08;
+            break;
+        case '#':   //
+            // GPIO_PORTF_DATA_R |= 0x08;
             break;
         case '\0':
-            // GPIO_PORTF_DATA_R &= ~0x08;
-            // GPIO_PORTF_DATA_R ^= 0x04;
+            GPIO_PORTF_DATA_R &= 0x00;
+            // GPIO_PORTF_DATA_R ^= 0x02;
             break;
         default:
-            //GPIO_PORTF_DATA_R &= ~0x02;
+            // GPIO_PORTF_DATA_R |= 0x08;
             break;
     }
-    delay(16000);
+    delay(160000);
 
 }
 
