@@ -66,11 +66,11 @@ INT8U sw1_pushed()
     return( !( GPIO_PORTF_DATA_R & 0x10 ) );
 }
 
-INT8U key_row_pushed(){     // Y
+INT8U key_col_pushed(){     // Y
     return ( !(GPIO_PORTE_DATA_R & 0x0F) );
 }
 
-INT8U key_col_pushed(){     // X
+INT8U key_row_pushed(){     // X
     return ( !( GPIO_PORTA_DATA_R & 0x1C ) );
 }
 
@@ -81,18 +81,19 @@ char keypad_scan() {
     for (row = 0; row < ROWS; row++) {
         // Activate one row at a time
         GPIO_PORTA_DATA_R = ~(1 << (row + 2));
-        delay(1600);
+        // delay(1600);
 
         // Iterate over columns
         for (col = 0; col < COLS; col++) {
             // Check if any key is pressed
-            if ( (GPIO_PORTE_DATA_R & 0x0F) == (1 << col)) {
+            if ( (GPIO_PORTE_DATA_R & 0x0F) == (1 << col) ) {
+                // GPIO_PORTF_DATA_R ^= 0x04;  // TODO remove
                 // Key pressed, return corresponding character
-                GPIO_PORTF_DATA_R ^= 0x08;  // TODO remove
                 return keys[row][col];
             }
         }
     }
+    GPIO_PORTF_DATA_R ^= 0x08;  // TODO remove
     // No key pressed
     return '\0';
 }
@@ -123,7 +124,7 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
 
     // Continuously scan for key presses
     pressed_key = keypad_scan();
-    delay(160000);
+    // delay(160000);
     // Process the pressed key
     switch (pressed_key) {
         case '1':
@@ -157,14 +158,14 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
             // GPIO_PORTF_DATA_R ^= 0x02;
             // break;
         case '0':
-            GPIO_PORTF_DATA_R ^= 0x08;
+            // GPIO_PORTF_DATA_R ^= 0x02;
             // break;
         case '#':
-            // GPIO_PORTF_DATA_R &= ~0x02;
+            // GPIO_PORTF_DATA_R ^= 0x08;
             break;
         case '\0':
             // GPIO_PORTF_DATA_R &= ~0x08;
-            GPIO_PORTF_DATA_R ^= 0x04;
+            // GPIO_PORTF_DATA_R ^= 0x04;
             break;
         default:
             //GPIO_PORTF_DATA_R &= ~0x02;
