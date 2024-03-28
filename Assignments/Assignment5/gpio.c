@@ -69,24 +69,38 @@ void init_keypad(void) {
 	// KeyB J: PE2  - Y2
 	// KeyB K: PE3  - Y1
 
-	int dummy;	
+	// int dummy;	
 
-	// Enable clock for port A and E
-	SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOA | SYSCTL_RCGC2_GPIOE;
+	// // Enable clock for port A and E
+	// // SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOA | SYSCTL_RCGC2_GPIOE;
+	// SYSCTL_RCGC2_R |= 0x01 | 0x10;
 
-	// Do a dummy read to insert a few cycles after enabling the peripheral.
-	dummy = SYSCTL_RCGC2_R;
+	// // Do a dummy read to insert a few cycles after enabling the peripheral.
+	// dummy = SYSCTL_RCGC2_R;
 
-	// Configure PortA as digital input
-	GPIO_PORTA_DEN_R |= 0x1C;
-	GPIO_PORTA_DIR_R &= ~0x1C;
-	// GPIO_PORTA_PUR_R |= 0x1C;
-	GPIO_PORTA_PDR_R |= 0x1C;
+	// // Configure PortA as digital input
+	// GPIO_PORTA_DEN_R |= 0x1C;
+	// GPIO_PORTA_DIR_R &= ~0x1C;
+	// // GPIO_PORTA_PUR_R |= 0x1C;
+	// GPIO_PORTA_PDR_R |= 0x1C;
 	
-	// Configure PortE as digital output
+	// // Configure PortE as digital output
+	// GPIO_PORTE_DEN_R |= 0x0F;
+	// GPIO_PORTE_DIR_R |= 0x0F;
+	// // GPIO_PORTE_PUR_R |= 0x0F;
+
+
+	SYSCTL_RCGCGPIO_R |= 0x11; // Enable clock for port A and E
+	while((SYSCTL_RCGCGPIO_R & 0x11) == 0);
+
+	GPIO_PORTA_CR_R |= 0x1C;
+	GPIO_PORTA_DIR_R |= 0x1C;	// Set as output
+	GPIO_PORTA_DEN_R |= 0x1C;
+
+	GPIO_PORTE_CR_R |= 0x0F;
+	GPIO_PORTE_DIR_R |= 0x00;	// Set as input
 	GPIO_PORTE_DEN_R |= 0x0F;
-	GPIO_PORTE_DIR_R |= 0x0F;
-	// GPIO_PORTE_PUR_R |= 0x0F;
+	GPIO_PORTE_PDR_R |= 0x0F;
 
 }
 
