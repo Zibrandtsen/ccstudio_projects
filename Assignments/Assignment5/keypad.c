@@ -81,11 +81,12 @@ char keypad_scan() {
     for (row = 0; row < ROWS; row++) {
         // Activate one row at a time
         GPIO_PORTA_DATA_R = ~(1 << (row + 2));
+        delay(1600);
 
         // Iterate over columns
         for (col = 0; col < COLS; col++) {
             // Check if any key is pressed
-            if (!(GPIO_PORTE_DATA_R & (1 << col))) {
+            if ( (GPIO_PORTE_DATA_R & 0x0F) == (1 << col)) {
                 // Key pressed, return corresponding character
                 GPIO_PORTF_DATA_R ^= 0x08;  // TODO remove
                 return keys[row][col];
@@ -126,11 +127,11 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
     // Process the pressed key
     switch (pressed_key) {
         case '1':
-            GPIO_PORTF_DATA_R ^= 0x02;
-            break;
-        case '2':
             // GPIO_PORTF_DATA_R ^= 0x02;
             // break;
+        case '2':
+            GPIO_PORTF_DATA_R ^= 0x02;
+            break;
         case '3':
             // GPIO_PORTF_DATA_R ^= 0x02;
             // break;
@@ -156,7 +157,7 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
             // GPIO_PORTF_DATA_R ^= 0x02;
             // break;
         case '0':
-            GPIO_PORTF_DATA_R ^= 0x04;
+            GPIO_PORTF_DATA_R ^= 0x08;
             // break;
         case '#':
             // GPIO_PORTF_DATA_R &= ~0x02;
