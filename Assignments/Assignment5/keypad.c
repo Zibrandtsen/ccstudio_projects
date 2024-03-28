@@ -44,7 +44,8 @@ enum SW1_states
 /*****************************   Functions   *******************************/
 INT8U button_pushed()
 {
-    return( (!(GPIO_PORTA_DATA_R & 0x10)) && (!(GPIO_PORTE_DATA_R & 0x08)) ); // 
+    // return( (!(GPIO_PORTA_DATA_R & 0x10)) && (!(GPIO_PORTE_DATA_R & 0x08)) );
+    return( !(GPIO_PORTF_DATA_R & 0x10) );
 }
 
 void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
@@ -60,12 +61,10 @@ void keypad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data){
     case SW1_PRESSED:
         if(!button_pushed())                //if button released, change state and signal
         {
-            GPIO_PORTF_DATA_R |= 0x02;      //toggle red led
+            GPIO_PORTF_DATA_R ^= 0x02;
             set_state(SW1_WAIT);
             preset_sem(SEM_SW1, 1);         //signal semaphore
-        } else {
-            GPIO_PORTF_DATA_R &= ~0x02;     //turn off red led
-        }
+        } 
         break;
     default:
         break;
