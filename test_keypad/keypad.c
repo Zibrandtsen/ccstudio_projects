@@ -81,14 +81,14 @@ char keypad_scan() {
     // Iterate over rows
     for (col = 0; col < COLS; col++) {
         // Activate one row at a time
-        GPIO_PORTA_DATA_R = (1 << (col + 2));
+        GPIO_PORTA_DATA_R = (1 << (4 - col));
         // delay(1600);
 
         // Iterate over columns
         for (row = 0; row < ROWS; row++) {
             // Check if any key is pressed
             // uint32_t x = GPIO_PORTE_DATA_R & 0x0F;
-            if ( (GPIO_PORTE_DATA_R & 0x0F) == (1 << (row)) ) {
+            if ( (GPIO_PORTE_DATA_R & 0x0F) == (1 << (3 - row)) ) {
                 // GPIO_PORTF_DATA_R ^= 0x08;  // TODO remove
                 // Key pressed, return corresponding character
                 key = keys[row][col];
