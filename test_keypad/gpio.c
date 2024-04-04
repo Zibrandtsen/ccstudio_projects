@@ -64,6 +64,7 @@ void init_keypad(void) {
 	// KeyB D: PA2	- X3
 	// KeyB E: PA3	- X2
 	// KeyB F: PA4	- X1
+	
 	// KeyB G: PE0  - Y4
 	// KeyB H: PE1  - Y3
 	// KeyB J: PE2  - Y2
