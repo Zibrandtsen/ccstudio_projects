@@ -50,9 +50,9 @@ void init_LCD(void){
     GPIO_PORTD_DEN_R = 0x0C;
 
     LCD4bits_Cmd(0x28);         // 2 lines and 5x7 character (4-bit data, D4 to D7)
-	LCD4bits_Cmd(0x06);         // Automatic Increment cursor (shift cursor to right)
-	LCD4bits_Cmd(0x0C);         // Display on, cursor blinking
-	LCD4bits_Cmd(0x01);         // Clear display screen
+    LCD4bits_Cmd(0x06);         // Automatic Increment cursor (shift cursor to right)
+    LCD4bits_Cmd(0x0C);         // Display on, cursor blinking
+    LCD4bits_Cmd(0x01);         // Clear display screen
 }
 
 void LCD_Write4bits( unsigned char data, unsigned char control )
