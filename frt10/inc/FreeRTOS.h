@@ -291,14 +291,17 @@
 #if configUSE_TIMERS == 1
 
     #ifndef configTIMER_TASK_PRIORITY
+        //#define configTIMER_TASK_PRIORITY (configMAX_PRIORITIES - 1)
         #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_PRIORITY must also be defined.
     #endif /* configTIMER_TASK_PRIORITY */
 
     #ifndef configTIMER_QUEUE_LENGTH
+        //#define configTIMER_QUEUE_LENGTH 10
         #error If configUSE_TIMERS is set to 1 then configTIMER_QUEUE_LENGTH must also be defined.
     #endif /* configTIMER_QUEUE_LENGTH */
 
     #ifndef configTIMER_TASK_STACK_DEPTH
+        //#define configTIMER_TASK_STACK_DEPTH (configMINIMAL_STACK_SIZE * 2)
         #error If configUSE_TIMERS is set to 1 then configTIMER_TASK_STACK_DEPTH must also be defined.
     #endif /* configTIMER_TASK_STACK_DEPTH */
 
